@@ -7,15 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.jitterted.IngredientName.COCOA;
-import static com.jitterted.IngredientName.COFFEE;
-import static com.jitterted.IngredientName.CREAM;
-import static com.jitterted.IngredientName.DECAF_COFFEE;
-import static com.jitterted.IngredientName.ESPRESSO;
-import static com.jitterted.IngredientName.FOAMED_MILK;
-import static com.jitterted.IngredientName.STEAMED_MILK;
-import static com.jitterted.IngredientName.SUGAR;
-import static com.jitterted.IngredientName.WHIPPED_CREAM;
+import static com.jitterted.IngredientName.*;
 
 public class DrinkMachine {
 
@@ -29,28 +21,13 @@ public class DrinkMachine {
   }
 
   public DrinkMachine() {
-    ingredientList.add(new Ingredient(COFFEE, 0.75));
-    ingredientList.add(new Ingredient(DECAF_COFFEE, 0.75));
-    ingredientList.add(new Ingredient(SUGAR, 0.25));
-    ingredientList.add(new Ingredient(CREAM, 0.25));
-    ingredientList.add(new Ingredient(STEAMED_MILK, 0.35));
-    ingredientList.add(new Ingredient(FOAMED_MILK, 0.35));
-    ingredientList.add(new Ingredient(ESPRESSO, 1.10));
-    ingredientList.add(new Ingredient(COCOA, 0.90));
-    ingredientList.add(new Ingredient(WHIPPED_CREAM, 1.00));
+    createIngredientList();
+    createDrinkList();
+    updateDrinkCosts();
+    updateMakeable();
+  }
 
-    Collections.sort(ingredientList);
-
-    RecipeFactory recipeFactory = new RecipeFactory(ingredientList);
-    drinkList.add(new Drink("Coffee", recipeFactory.create("Coffee", "Coffee", "Coffee", "Sugar", "Cream")));
-    drinkList.add(new Drink("Decaf Coffee", recipeFactory.create("Decaf Coffee", "Decaf Coffee", "Decaf Coffee", "Sugar", "Cream")));
-    drinkList.add(new Drink("Caffe Latte", recipeFactory.create("Espresso", "Espresso", "Steamed Milk")));
-    drinkList.add(new Drink("Caffe Americano", recipeFactory.create("Espresso", "Espresso", "Espresso")));
-    drinkList.add(new Drink("Caffe Mocha", recipeFactory.create("Espresso", "Cocoa", "Steamed Milk", "Whipped Cream")));
-    drinkList.add(new Drink("Cappuccino", recipeFactory.create("Espresso", "Espresso", "Steamed Milk", "Foamed Milk")));
-
-    Collections.sort(drinkList);
-
+  private void updateDrinkCosts() {
     for (Drink drink : drinkList) {
       double cost = 0;
       Recipe recipe = drink.getRecipe();
@@ -61,7 +38,30 @@ public class DrinkMachine {
       }
       drink.setCost(cost);
     }
-    updateMakeable();
+  }
+
+  private void createDrinkList() {
+    RecipeFactory recipeFactory = new RecipeFactory(ingredientList);
+    drinkList.add(new Drink("Coffee", recipeFactory.create("Coffee", "Coffee", "Coffee", "Sugar", "Cream")));
+    drinkList.add(new Drink("Decaf Coffee", recipeFactory.create("Decaf Coffee", "Decaf Coffee", "Decaf Coffee", "Sugar", "Cream")));
+    drinkList.add(new Drink("Caffe Latte", recipeFactory.create("Espresso", "Espresso", "Steamed Milk")));
+    drinkList.add(new Drink("Caffe Americano", recipeFactory.create("Espresso", "Espresso", "Espresso")));
+    drinkList.add(new Drink("Caffe Mocha", recipeFactory.create("Espresso", "Cocoa", "Steamed Milk", "Whipped Cream")));
+    drinkList.add(new Drink("Cappuccino", recipeFactory.create("Espresso", "Espresso", "Steamed Milk", "Foamed Milk")));
+    Collections.sort(drinkList);
+  }
+
+  private void createIngredientList() {
+    ingredientList.add(new Ingredient(COFFEE, 0.75));
+    ingredientList.add(new Ingredient(DECAF_COFFEE, 0.75));
+    ingredientList.add(new Ingredient(SUGAR, 0.25));
+    ingredientList.add(new Ingredient(CREAM, 0.25));
+    ingredientList.add(new Ingredient(STEAMED_MILK, 0.35));
+    ingredientList.add(new Ingredient(FOAMED_MILK, 0.35));
+    ingredientList.add(new Ingredient(ESPRESSO, 1.10));
+    ingredientList.add(new Ingredient(COCOA, 0.90));
+    ingredientList.add(new Ingredient(WHIPPED_CREAM, 1.00));
+    Collections.sort(ingredientList);
   }
 
   public void startIO() {

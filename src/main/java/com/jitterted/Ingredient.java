@@ -2,8 +2,12 @@ package com.jitterted;
 
 public class Ingredient implements Comparable<Ingredient> {
   private final IngredientName name;
-  private final double cost;
-  private int stock = 0;
+
+  // currency? what about decimals?
+  private final double cost; // TODO: this is primitive obsession, improve.
+
+  // how does it count? what units uses?
+  private int stock = 0; // TODO: this is primitive obsession, improve.
 
   public Ingredient(IngredientName name, double cost) {
     this.name = name;

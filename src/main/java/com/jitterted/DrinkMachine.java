@@ -11,8 +11,8 @@ import static com.jitterted.IngredientName.*;
 
 public class DrinkMachine {
 
-  private final List<Drink> drinkList = new ArrayList<>();
-  private final List<Ingredient> ingredientList = new ArrayList<>();
+  private final List<Drink> drinkList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
+  private final List<Ingredient> ingredientList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
 
   public static void main(String[] args) {
     DrinkMachine drinkMachine = new DrinkMachine();

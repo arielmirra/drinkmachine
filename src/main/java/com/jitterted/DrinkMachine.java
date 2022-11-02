@@ -12,7 +12,7 @@ import static com.jitterted.IngredientName.*;
 public class DrinkMachine {
 
   private final List<Drink> drinkList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
-  private final List<Ingredient> ingredientList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
+  private final List<Ingredient> ingredientList = new Ingredients().getIngredientList();
 
   public static void main(String[] args) {
     DrinkMachine drinkMachine = new DrinkMachine();
@@ -21,7 +21,6 @@ public class DrinkMachine {
   }
 
   public DrinkMachine() {
-    createIngredientList();
     createDrinkList();
     updateDrinkCosts();
     updateMakeable();
@@ -49,19 +48,6 @@ public class DrinkMachine {
     drinkList.add(new Drink("Caffe Mocha", recipeFactory.create("Espresso", "Cocoa", "Steamed Milk", "Whipped Cream")));
     drinkList.add(new Drink("Cappuccino", recipeFactory.create("Espresso", "Espresso", "Steamed Milk", "Foamed Milk")));
     Collections.sort(drinkList);
-  }
-
-  private void createIngredientList() {
-    ingredientList.add(new Ingredient(COFFEE, 0.75));
-    ingredientList.add(new Ingredient(DECAF_COFFEE, 0.75));
-    ingredientList.add(new Ingredient(SUGAR, 0.25));
-    ingredientList.add(new Ingredient(CREAM, 0.25));
-    ingredientList.add(new Ingredient(STEAMED_MILK, 0.35));
-    ingredientList.add(new Ingredient(FOAMED_MILK, 0.35));
-    ingredientList.add(new Ingredient(ESPRESSO, 1.10));
-    ingredientList.add(new Ingredient(COCOA, 0.90));
-    ingredientList.add(new Ingredient(WHIPPED_CREAM, 1.00));
-    Collections.sort(ingredientList);
   }
 
   public void startIO() {

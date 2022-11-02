@@ -27,4 +27,14 @@ public class Ingredients {
     ingredientList.add(new Ingredient(WHIPPED_CREAM, 1.00));
     Collections.sort(ingredientList);
   }
+
+  double calculateCostOf(Recipe recipe) {
+    double cost = 0;
+    for (Ingredient ingredient : getIngredientList()) {
+      if (recipe.hasIngredient(ingredient)) {
+        cost += ingredient.getCost() * recipe.quantityNeededFor(ingredient);
+      }
+    }
+    return cost;
+  }
 }

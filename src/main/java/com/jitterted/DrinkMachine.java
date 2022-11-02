@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.jitterted.IngredientName.*;
-
 public class DrinkMachine {
 
   private final List<Drink> drinkList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
@@ -29,21 +27,9 @@ public class DrinkMachine {
   private void updateDrinkCosts() {
     for (Drink drink : drinkList) {
       Recipe recipe = drink.getRecipe();
-      double cost = calculateCostOf(recipe);
+      double cost = ingredients.calculateCostOf(recipe);
       drink.setCost(cost);
     }
-  }
-
-  // we first extract the method, then detect feature envy code smell, so we move it where it belongs
-  // refactor --> Move instance method --> Ingredients
-  private double calculateCostOf(Recipe recipe) {
-    double cost = 0;
-    for (Ingredient ingredient : ingredients.getIngredientList()) {
-      if (recipe.hasIngredient(ingredient)) {
-        cost += ingredient.getCost() * recipe.quantityNeededFor(ingredient);
-      }
-    }
-    return cost;
   }
 
   private void createDrinkList() {

@@ -12,7 +12,7 @@ import static com.jitterted.IngredientName.*;
 public class DrinkMachine {
 
   private final List<Drink> drinkList = new ArrayList<>(); // TODO: this is primitive obsession, improve.
-  private final List<Ingredient> ingredientList = new Ingredients().getIngredientList();
+  private final Ingredients ingredients = new Ingredients();
 
   public static void main(String[] args) {
     DrinkMachine drinkMachine = new DrinkMachine();
@@ -28,19 +28,26 @@ public class DrinkMachine {
 
   private void updateDrinkCosts() {
     for (Drink drink : drinkList) {
-      double cost = 0;
       Recipe recipe = drink.getRecipe();
-      for (Ingredient ingredient : ingredientList) {
-        if (recipe.hasIngredient(ingredient)) {
-          cost += ingredient.getCost() * recipe.quantityNeededFor(ingredient);
-        }
-      }
+      double cost = calculateCostOf(recipe);
       drink.setCost(cost);
     }
   }
 
+  // we first extract the method, then detect feature envy code smell, so we move it where it belongs
+  // refactor --> Move instance method --> Ingredients
+  private double calculateCostOf(Recipe recipe) {
+    double cost = 0;
+    for (Ingredient ingredient : ingredients.getIngredientList()) {
+      if (recipe.hasIngredient(ingredient)) {
+        cost += ingredient.getCost() * recipe.quantityNeededFor(ingredient);
+      }
+    }
+    return cost;
+  }
+
   private void createDrinkList() {
-    RecipeFactory recipeFactory = new RecipeFactory(ingredientList);
+    RecipeFactory recipeFactory = new RecipeFactory(ingredients.getIngredientList());
     drinkList.add(new Drink("Coffee", recipeFactory.create("Coffee", "Coffee", "Coffee", "Sugar", "Cream")));
     drinkList.add(new Drink("Decaf Coffee", recipeFactory.create("Decaf Coffee", "Decaf Coffee", "Decaf Coffee", "Sugar", "Cream")));
     drinkList.add(new Drink("Caffe Latte", recipeFactory.create("Espresso", "Espresso", "Steamed Milk")));
@@ -77,7 +84,7 @@ public class DrinkMachine {
 
   public void displayInventoryAndMenu() {
     System.out.println("\nIngredient Inventory:\n");
-    for (Ingredient ingredient : ingredientList) {
+    for (Ingredient ingredient : ingredients.getIngredientList()) {
       System.out.println(ingredient.getName().displayName() + ", " + ingredient.getStock());
     }
 
@@ -92,7 +99,7 @@ public class DrinkMachine {
   public void makeDrink(Drink drink) {
     if (drink.getMakeable()) {
       System.out.println("Dispensing: " + drink.getName() + "\n");
-      for (Ingredient ingredient : ingredientList) {
+      for (Ingredient ingredient : ingredients.getIngredientList()) {
         Recipe recipe = drink.getRecipe();
         if (recipe.hasIngredient(ingredient)) {
           ingredient.setStock(ingredient.getStock() - recipe.quantityNeededFor(ingredient));
@@ -106,7 +113,7 @@ public class DrinkMachine {
   }
 
   public void restockIngredients() {
-    for (Ingredient ingredient : ingredientList) {
+    for (Ingredient ingredient : ingredients.getIngredientList()) {
       ingredient.setStock(10);
     }
     updateMakeable();
